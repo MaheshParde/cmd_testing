@@ -1,0 +1,235 @@
+pipeline {
+  agent any
+  tools {
+    maven 'MAVEN_HOME-3.6.3'
+  }
+  
+  //each branch has 1 job running at a time
+  options {
+    disableConcurrentBuilds()  
+  }
+
+  stages {
+    stage('Environment Variables') {
+      steps {
+        script {
+          load "$JENKINS_HOME/workspace/$Job_Name/envar.groovy"        
+        }
+      }
+    }
+    stage('Initialization') {
+      steps {
+        sh '''
+            echo "PATH = ${PATH}"
+        '''
+      }
+    }
+    stage("Build") {
+      steps {
+        git url: "${beGitUrl}",
+        branch: "${beBranch}",
+        credentialsId: 'GitLab-KEY'
+        sh "mvn  compile"
+        
+        
+      }
+    }
+    
+    stage('Unit Testing') {
+      steps {
+        script {
+          git url: "${beGitUrl}",
+          branch: "${beBranch}",
+          credentialsId: 'GitLab-KEY'
+          sh "mvn clean test"
+          echo 'TestNG Report'
+        }
+        step([$class: 'Publisher', reportFilenamePattern: '**/testng-results.xml'])
+      }
+    }
+    
+    stage('Code Coverage') {
+        steps{
+          	script {
+                	git url:"${beGitUrl}",
+                	branch:"${beBranch}", 
+                	credentialsId: 'GitLab-KEY'
+                 	echo 'Code Coverage'
+                 	jacoco()
+                    }
+                     	
+            }
+    }
+
+    stage('Code Analysis') {
+      steps {
+        script {
+          scannerHome = tool 'SonarQubeScanner'
+        }
+        withSonarQubeEnv('sonarqube') {
+          git url: "${beGitUrl}",
+          branch: "${beBranch}",
+          credentialsId: 'GitLab-KEY'
+          sh  "mvn -Dspring.profiles.acitve=dev -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml clean verify sonar:sonar"
+
+
+         
+        }
+      }
+    }
+    
+ stage('SonarQube Security') {
+      steps {
+        script {
+          scannerHome = tool 'SonarQubeScanner'
+        }
+        withSonarQubeEnv('sonarqube9005') {
+          git url: "${beGitUrl}",
+          branch: "${beBranch}",
+          credentialsId: 'GitLab-KEY'
+          sh  "mvn clean verify sonar:sonar"
+
+
+        }
+      }
+    }
+    stage('Build Images') {
+      steps {
+        git url: "${beGitUrl}",
+        branch: "${beBranch}",
+        credentialsId: 'GitLab-KEY'
+        sh 'mvn clean package'
+        script {
+          docker.withRegistry('docker-registry.cdacmumbai.in:443') {
+            def image = docker.build("${beimage}")
+          }
+        }
+
+        
+      }
+    }
+    /*
+    stage('Containerization') {
+      steps {
+        git url: "${beGitUrl}", 
+        branch: "${beBranch}", 
+        credentialsId: 'GitLab-KEY'
+        sh "docker-compose start"
+      }
+    }
+    */
+    stage('Upload Images to SIT/QA') {
+      steps {
+        withCredentials([string(credentialsId: 'DockerRegistryID', variable: 'DockerRegistryID')]) {}
+        sh "docker push $beimage"
+       // sh "docker push $feimage"
+      }
+    }
+    
+    stage('Build Images to UAT') {
+      steps {
+        git url: "${beGitUrl}",
+        branch: "${beBranch}",
+        credentialsId: 'GitLab-KEY'
+        sh 'mvn clean package'
+        script {
+          docker.withRegistry('docker-registry.ecgc.in:443') {
+            def image = docker.build("${uatbeimage}")
+          }
+        }
+      }
+    }
+stage('k8s deploy'){
+        steps {
+            sshagent(['k8s deploy']) {
+            sh "scp -o StrictHostKeyChecking=no dms.yml root@10.210.0.133:/root"
+                script{
+                         //try{
+                        sh "ssh root@10.210.0.133 kubectl apply -f dms.yml"
+                        //  }catch(error){
+                       sh " ssh root@10.210.0.133  kubectl rollout restart deployment erp-dms-dms-be -n ecgcbackend"
+                         //   }
+    
+                    }
+            //}
+         }
+       }
+
+    }
+stage('Upload Images to UAT') {
+     steps {
+        withCredentials([string(credentialsId: 'DockerRegistryID', variable: 'DockerRegistryID')]) {}
+        sh "docker push $uatbeimage"
+        //sh "docker push $uatfeimage"
+      }
+    }     
+
+/*stage('Approval for deployment to SIT'){
+ steps{
+  emailext (
+      from: "${fromemail}", 
+      to: "${toemails}", 
+      replyTo: "${replyto}", 
+      subject: "Job '${env.JOB_BASE_NAME}' (${env.BUILD_NUMBER}) is waiting for input",  
+      body: """<table>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+	  <p>Click to approve or reject deployment to SIT on link:  <a href='${env.BUILD_URL}/input'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a></table> 
+	  \n If no response is provided the job will be stopped in 30 mins.""",
+      mimeType: 'text/html');
+      timeout(time: 30, unit: 'MINUTES'){
+	  script {
+	  def userInput
+	  try{
+	  userInput = input(
+	  id: 'Proceed1', message: 'SIT Deployment Approval',
+	  parameters: [[$class: 'BooleanParameterDefinition', defaultValue: true,
+	  description: '', name: 'Please provide your confirmation for Deployment']
+	  ])	
+	  }catch(err){
+	  def user=err.getCauses()[0].getUser()
+	  userInput=false
+	  echo "Aborted by: [${user}]"
+		}
+	   } 
+	  }
+     }
+   }
+   */
+  
+    
+  } 
+  
+  
+  post {
+  success{
+  emailext( 
+   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}",
+   from: "${fromemail}",
+   to: "${toemails}",
+   subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+       )} 
+ unstable{
+  emailext attachLog: true,
+   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}\n Please find the log file attached for your reference",
+   from: "${fromemail}",
+   to: "${toemails}",
+   subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+       } 
+ aborted{
+  emailext attachLog: true,
+   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}\n Please find the log file attached for your reference",
+   from: "${fromemail}",
+   to: "${toemails}",
+   subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+       }
+ failure{
+  emailext attachLog: true,
+   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}\n Please find the log file attached for your reference",
+   from: "${fromemail}",
+   to: "${toemails}",
+   subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+       }               
+    always {
+      cleanWs()
+    }
+  }
+}
