@@ -1,18 +1,18 @@
-        
-        	Job_Name='test-dms-dms'
-          
-//BE
-  
-          	beGitUrl ='git@10.212.0.139:ecgc/smile/dms/erp_dms_dms_be.git'
-          	beBranch= 'test_dms'
+Job_Name='erp-accounts-accounts'
 
-//BE image
+beGitUrl='git@10.212.0.139:ecgc/smile/accounts/erp_accounts_accounts_be.git'
+beBranch='developer'
 
-        	//beimage='10.212.0.224:8084/erp-bs-sts-be.jar'
-        	beimage='docker-registry.cdacmumbai.in:443/erp-dms-dms-test-be.jar'
-        	
-        	uatbeimage='docker-registry.ecgc.in:443/erp-dms-dms-test-be.jar'
-        	
+feGitUrl='git@10.212.0.139:ecgc/smile/accounts/erp_accounts_accounts_fe.git'
+feBranch='developer'
+         	
+beimage='docker-registry.cdacmumbai.in:443/erp-accounts-accounts-be.jar '
+feimage='docker-registry.cdacmumbai.in:443/erp-accounts-accounts-fe.jar '
+
+uatbeimage='docker-registry.ecgc.in:443/erp-accounts-accounts-be.jar'
+uatfeimage='docker-registry.ecgc.in:443/erp-accounts-accounts-fe.jar'
+
 fromemail='ecgcdevops@cdac.in'
-toemails='ecgcdevops@cdac.in, mokshika@cdac.in'
+toemails='ecgcdevops@cdac.in, shwetapal@cdac.in, vrushalic@cdac.in,aakashn@cdac.in,amiteshb@cdac.in,mohasin@cdac.in'
 replyto='ecgcdevops@cdac.in'
+

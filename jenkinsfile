@@ -9,6 +9,7 @@ pipeline {
     disableConcurrentBuilds()  
   }
 
+  
   stages {
     stage('Environment Variables') {
       steps {
@@ -17,6 +18,7 @@ pipeline {
         }
       }
     }
+    
     stage('Initialization') {
       steps {
         sh '''
@@ -24,150 +26,186 @@ pipeline {
         '''
       }
     }
-//     stage("Build") {
-//       steps {
-//         git url: "${beGitUrl}",
-//         branch: "${beBranch}",
-//         credentialsId: 'GitLab-KEY'
-//         sh "mvn  compile"
+    
+    stage("Build") {
+      steps {
+        git url: "${beGitUrl}",
+        branch: "${beBranch}",
+        credentialsId: 'GitLab-KEY'
+        sh "mvn  compile"
         
-        
-//       }
-//     }
-    
-//     stage('Unit Testing') {
-//       steps {
-//         script {
-//           git url: "${beGitUrl}",
-//           branch: "${beBranch}",
-//           credentialsId: 'GitLab-KEY'
-//           sh "mvn clean test"
-//           echo 'TestNG Report'
-//         }
-//         step([$class: 'Publisher', reportFilenamePattern: '**/testng-results.xml'])
-//       }
-//     }
-    
-//     stage('Code Coverage') {
-//         steps{
-//           	script {
-//                 	git url:"${beGitUrl}",
-//                 	branch:"${beBranch}", 
-//                 	credentialsId: 'GitLab-KEY'
-//                  	echo 'Code Coverage'
-//                  	jacoco()
-//                     }
-                     	
-//             }
-//     }
-
-//     stage('Code Analysis') {
-//       steps {
-//         script {
-//           scannerHome = tool 'SonarQubeScanner'
-//         }
-//         withSonarQubeEnv('sonarqube') {
-//           git url: "${beGitUrl}",
-//           branch: "${beBranch}",
-//           credentialsId: 'GitLab-KEY'
-//           sh  "mvn -Dspring.profiles.acitve=dev -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml clean verify sonar:sonar"
-
-
-         
-//         }
-//       }
-//     }
-    
-//  stage('SonarQube Security') {
-//       steps {
-//         script {
-//           scannerHome = tool 'SonarQubeScanner'
-//         }
-//         withSonarQubeEnv('sonarqube9005') {
-//           git url: "${beGitUrl}",
-//           branch: "${beBranch}",
-//           credentialsId: 'GitLab-KEY'
-//           sh  "mvn clean verify sonar:sonar"
-
-
-//         }
-//       }
-//     }
-//     stage('Build Images') {
-//       steps {
-//         git url: "${beGitUrl}",
-//         branch: "${beBranch}",
-//         credentialsId: 'GitLab-KEY'
-//         sh 'mvn clean package'
-//         script {
-//           docker.withRegistry('docker-registry.cdacmumbai.in:443') {
-//             def image = docker.build("${beimage}")
-//           }
-//         }
-
-        
-//       }
-//     }
-//     /*
-//     stage('Containerization') {
-//       steps {
-//         git url: "${beGitUrl}", 
-//         branch: "${beBranch}", 
-//         credentialsId: 'GitLab-KEY'
-//         sh "docker-compose start"
-//       }
-//     }
-//     */
-//     stage('Upload Images to SIT/QA') {
-//       steps {
-//         withCredentials([string(credentialsId: 'DockerRegistryID', variable: 'DockerRegistryID')]) {}
-//         sh "docker push $beimage"
-//        // sh "docker push $feimage"
-//       }
-//     }
-    
-//     stage('Build Images to UAT') {
-//       steps {
-//         git url: "${beGitUrl}",
-//         branch: "${beBranch}",
-//         credentialsId: 'GitLab-KEY'
-//         sh 'mvn clean package'
-//         script {
-//           docker.withRegistry('docker-registry.ecgc.in:443') {
-//             def image = docker.build("${uatbeimage}")
-//           }
-//         }
-//       }
-//     }
-stage('k8s deploy'){
-        steps {
-            sshagent(['k8s deploy']) {
-            sh "scp -o StrictHostKeyChecking=no account-account-fe.yml account-account-be.yml root@10.210.0.133:/root"
-                script{
-                         //try{
-                        sh "ssh root@10.210.0.133 kubectl apply -f account-account-fe.yml"
-                        //  }catch(error){
-                       sh "ssh root@10.210.0.133  kubectl rollout restart deployment erp-accounts-accounts-fe -n ecgcfrontend"
-                       sh "ssh root@10.210.0.133 kubectl apply -f account-account-be.yml"
-                       sh "ssh root@10.210.0.133  kubectl rollout restart deployment erp-accounts-accounts-be -n ecgcbackend"
-                         //   }
-    
-                    }
-            //}
-         }
-       }
-
+        git url: "${feGitUrl}",
+        branch: "${feBranch}",
+        credentialsId: 'GitLab-KEY'
+        sh "mvn compile"
+      }
     }
-// stage('Upload Images to UAT') {
-//      steps {
-//         withCredentials([string(credentialsId: 'DockerRegistryID', variable: 'DockerRegistryID')]) {}
-//         sh "docker push $uatbeimage"
-//         //sh "docker push $uatfeimage"
-//       }
-    }     
+    
+    stage('Unit Testing') {
+      steps {
+        script {
+          git url: "${beGitUrl}",
+          branch: "${beBranch}",
+          credentialsId: 'GitLab-KEY'
+          sh "mvn clean test"
+          echo 'TestNG Report'
+          
+          
+        }
+        step([$class: 'Publisher', reportFilenamePattern: '**/testng-results.xml'])
+        
+        script {
+          git url: "${feGitUrl}",
+          branch: "${feBranch}",
+          credentialsId: 'GitLab-KEY'
+          sh "mvn clean test"
+          echo 'TestNG Report'
+          
+          
+        }
+        step([$class: 'Publisher', reportFilenamePattern: '**/testng-results.xml'])
+      }
+    }
+    
+    stage('Code Coverage') {
+        steps{
+          script {
+            git url:"${beGitUrl}",
+            branch:"${beBranch}", 
+            credentialsId: 'GitLab-KEY'
+            echo 'Code Coverage'
+            jacoco()
+            }
+            script {
+            git url:"${feGitUrl}",
+            branch:"${feBranch}", 
+            credentialsId: 'GitLab-KEY'
+            echo 'Code Coverage'
+            jacoco()
+            }
+                     	
+        }
+    }
 
-/*stage('Approval for deployment to SIT'){
- steps{
+    stage('Static Code Analysis') {
+      steps {
+        script {
+          scannerHome = tool 'SonarQubeScanner'
+        }
+        withSonarQubeEnv('sonarqube') {
+          git url: "${beGitUrl}",
+          branch: "${beBranch}",
+          credentialsId: 'GitLab-KEY'
+          //sh  "mvn -Dspring.profiles.active=dev -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml clean verify sonar:sonar"
+          sh  "mvn -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml clean verify sonar:sonar"
+
+
+          git url: "${feGitUrl}",
+          branch: "${feBranch}",
+          credentialsId: 'GitLab-KEY'
+          //sh "mvn -Dspring.profiles.active=dev -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml clean verify sonar:sonar"
+          sh  "mvn -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml clean verify sonar:sonar"
+
+        }
+      }
+    }
+    
+  stage('SonarQube Security') {
+      steps {
+        script {
+          scannerHome = tool 'SonarQubeScanner'
+        }
+        withSonarQubeEnv('sonarqube9005') {
+          git url: "${beGitUrl}",
+          branch: "${beBranch}",
+          credentialsId: 'GitLab-KEY'
+          sh  "mvn clean verify sonar:sonar"
+
+
+          git url: "${feGitUrl}",
+          branch: "${feBranch}",
+          credentialsId: 'GitLab-KEY'
+          sh "mvn clean verify sonar:sonar"
+        }
+      }
+    }
+stage('Build Images') {
+      steps {
+        git url: "${beGitUrl}",
+        branch: "${beBranch}",
+        credentialsId: 'GitLab-KEY'
+        sh 'mvn clean package'
+        script {
+          docker.withRegistry('docker-registry.cdacmumbai.in:443') {
+            def image = docker.build("${beimage}")
+          }
+        }
+
+        git url: "${feGitUrl}",
+        branch: "${feBranch}",
+        credentialsId: 'GitLab-KEY'
+        sh 'mvn clean package'
+        script {
+          docker.withRegistry('docker-registry.cdacmumbai.in:443') {
+            def image = docker.build("${feimage}")
+          }
+        }
+      }
+    }
+    
+    /*
+    stage('Containerization') {
+      steps {
+        git url: "${beGitUrl}", 
+        branch: "${beBranch}", 
+        credentialsId: 'GitLab-KEY'
+        sh "docker-compose start"
+      }
+    }
+    */
+stage('Upload Images to SIT/QA') {
+     steps {
+        withCredentials([string(credentialsId: 'DockerRegistryID', variable: 'DockerRegistryID')]) {}
+        sh "docker push $beimage"
+        sh "docker push $feimage"
+      }
+    }    
+stage('Build Images to UAT') {
+      steps {
+        git url: "${beGitUrl}",
+        branch: "${beBranch}",
+        credentialsId: 'GitLab-KEY'
+        sh 'mvn clean package'
+        script {
+          docker.withRegistry('docker-registry.ecgc.in:443') {
+            def image = docker.build("${uatbeimage}")
+          }
+        }
+
+        git url: "${feGitUrl}",
+        branch: "${feBranch}",
+        credentialsId: 'GitLab-KEY'
+        sh 'mvn clean package'
+        script {
+          docker.withRegistry('docker-registry.ecgc.in:443') {
+            def image = docker.build("${uatfeimage}")
+          }
+        }
+      }
+    }
+
+
+
+stage('Upload Images to UAT') {
+     steps {
+        withCredentials([string(credentialsId: 'DockerRegistryID', variable: 'DockerRegistryID')]) {}
+        sh "docker push $uatbeimage"
+        sh "docker push $uatfeimage"
+      }
+    }       
+
+/*stage('Approval for deployment to SIT') {
+  steps{
   emailext (
       from: "${fromemail}", 
       to: "${toemails}", 
@@ -194,17 +232,40 @@ stage('k8s deploy'){
 	   } 
 	  }
      }
-   }
-   */
-  
-    
-  
-  
-  
-  post {               
-    always {
+   }*/
+
+ }
+post {
+ success{
+  emailext( 
+   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}",
+   from: "${fromemail}",
+   to: "${toemails}",
+   subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+       )} 
+ unstable{
+  emailext attachLog: true,
+   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}\n Please find the log file attached for your reference",
+   from: "${fromemail}",
+   to: "${toemails}",
+   subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+       } 
+ aborted{
+  emailext attachLog: true,
+   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}\n Please find the log file attached for your reference",
+   from: "${fromemail}",
+   to: "${toemails}",
+   subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+       }
+ failure{
+  emailext attachLog: true,
+   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}\n Please find the log file attached for your reference",
+   from: "${fromemail}",
+   to: "${toemails}",
+   subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+       }               
+  always {
       cleanWs()
     }
   }
 }
-
