@@ -1,0 +1,79 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: erp-accounts-accounts-fe
+  labels: 
+    app: erp-accounts-accounts-app
+spec:
+  selector:
+    app: erp-accounts-accounts-app
+    tier: frontend
+  type: NodePort
+  ports:
+    - port: 11194        #container port
+      targetPort: 11194       #Pod port
+      nodePort: 32090  #If type is NodePort then use nodePort   
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: erp-accounts-accounts-fe
+  namespace: ecgcfrontend
+  labels: 
+    app: erp-accounts-accounts-app
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels: 
+      app: erp-accounts-accounts-app
+      tier: frontend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  revisionHistoryLimit: 2
+  template: 
+    metadata: 
+      labels: 
+        app: erp-accounts-accounts-app
+        tier: frontend
+      name: erp-accounts-accounts-fe
+    spec:
+      containers: 
+        - image: docker-registry.cdacmumbai.in:443/erp-accounts-accounts-fe.jar:latest
+          imagePullPolicy: Always
+          name: erp-accounts-accounts-container
+          ports:
+          - containerPort: 11194
+          readinessProbe:
+            tcpSocket:
+              port: 11194
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          livenessProbe:
+            tcpSocket:
+               port: 11194
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            failureThreshold: 5
+            timeoutSeconds: 5
+#          resources:
+#            requests:
+#              memory: "64Mi"
+#              cpu: "250m"
+#            limits:
+#              memory: "128Mi"
+#              cpu: "500m" 		  
+#          ports: 
+#           - containerPort: 80
+          env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: "sit-secured"
+#      nodeSelector:
+#	   size:medium	
+      dnsConfig:
+        searches:
+          - ecgc.svc.cluster.local
+          #- ecgcbackend.svc.cluster.local
