@@ -24,6 +24,8 @@ pipeline {
         '''
       }
     }
+    
+    /*
     stage("Build") {
       steps {
         git url: "${beGitUrl}",
@@ -138,16 +140,16 @@ pipeline {
           }
         }
       }
-    }
+    }*/
 stage('k8s deploy'){
         steps {
             sshagent(['k8s deploy']) {
-            sh "scp -o StrictHostKeyChecking=no dms.yml root@10.210.0.133:/root"
+            sh "scp -o StrictHostKeyChecking=no  account-account-fe.yml root@10.210.0.133:/root"
                 script{
                          //try{
-                        sh "ssh root@10.210.0.133 kubectl apply -f dms.yml"
+                        sh "ssh root@10.210.0.133 kubectl apply -f  account-account-fe.yml"
                         //  }catch(error){
-                       sh " ssh root@10.210.0.133  kubectl rollout restart deployment erp-dms-dms-be -n ecgcbackend"
+                       sh " ssh root@10.210.0.133  kubectl rollout restart deployment erp- account-account-fe -n ecgcfrontend"
                          //   }
     
                     }
@@ -156,13 +158,13 @@ stage('k8s deploy'){
        }
 
     }
-stage('Upload Images to UAT') {
+/*stage('Upload Images to UAT') {
      steps {
         withCredentials([string(credentialsId: 'DockerRegistryID', variable: 'DockerRegistryID')]) {}
         sh "docker push $uatbeimage"
         //sh "docker push $uatfeimage"
       }
-    }     
+    }  */   
 
 /*stage('Approval for deployment to SIT'){
  steps{
