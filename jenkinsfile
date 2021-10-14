@@ -147,7 +147,7 @@ stage('k8s deploy'){
                          //try{
                         sh "ssh root@10.210.0.133 kubectl apply -f account-account-fe.yml"
                         //  }catch(error){
-                       sh " ssh root@10.210.0.133  kubectl rollout restart deployment erp-account-account-fe -n ecgcfrontend"
+                       sh " ssh root@10.210.0.133  kubectl rollout restart deployment erp-accounts-accounts-fe -n ecgcfrontend"
                          //   }
     
                     }
