@@ -267,7 +267,7 @@ stage('k8s deploy to QA'){
                         sh "ssh root@10.210.0.133  kubectl rollout restart deployment erp-accounts-accounts-be -n ecgcbackend"
     
                     }
-            //}
+            }
          }
        }
 
@@ -305,5 +305,4 @@ post {
       cleanWs()
     }
   }
-}
 }
