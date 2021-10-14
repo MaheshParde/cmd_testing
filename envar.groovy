@@ -15,5 +15,5 @@ uatfeimage='docker-registry.ecgc.in:443/erp-accounts-accounts-fe.jar'
 fromemail='ecgcdevops@cdac.in'
 toemails='ecgc-devops01@cdac.in'
 //toemails='ecgcdevops@cdac.in, shwetapal@cdac.in, vrushalic@cdac.in,aakashn@cdac.in,amiteshb@cdac.in,mohasin@cdac.in'
-replyto='ecgcdevops@cdac.in'
+replyto='ecgc-devops01@cdac.in'
 
