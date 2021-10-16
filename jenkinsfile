@@ -52,7 +52,7 @@ pipeline {
           
           
         }
-       // step([$class: 'Publisher', reportFilenamePattern: '**/testng-results.xml'])
+        step([$class: 'Publisher', reportFilenamePattern: '**/testng-results.xml'])
         
         script {
           git url: "${feGitUrl}",
@@ -63,7 +63,7 @@ pipeline {
           
           
         }
-      //  step([$class: 'Publisher', reportFilenamePattern: '**/testng-results.xml'])
+        step([$class: 'Publisher', reportFilenamePattern: '**/testng-results.xml'])
       }
     }
     
