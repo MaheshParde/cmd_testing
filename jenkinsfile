@@ -232,7 +232,7 @@ stage('Approval for deployment to QA') {
       replyTo: "${replyto}", 
       subject: "Job '${env.JOB_BASE_NAME}' (${env.BUILD_NUMBER}) is waiting for input",  
       body: """<table>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-	  <p>Click to approve or reject deployment to SIT on link:  <a href='${env.BUILD_URL}/input'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a></table> 
+	  <p>Click to approve or reject deployment to QA on link:  <a href='${env.BUILD_URL}/input'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a></table> 
 	  \n If no response is provided the job will be stopped in 5 mins.""",
       mimeType: 'text/html');
       timeout(time: 5, unit: 'MINUTES'){
