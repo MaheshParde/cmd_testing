@@ -12,8 +12,8 @@ feimage='docker-registry.cdacmumbai.in:443/erp-accounts-accounts-fe.jar '
 uatbeimage='docker-registry.ecgc.in:443/erp-accounts-accounts-be.jar'
 uatfeimage='docker-registry.ecgc.in:443/erp-accounts-accounts-fe.jar'
 
-fromemail='ecgcdevops@cdac.in'
-toemails='ecgc-devops01@cdac.in'
+fromemail='ecgc-dev7@cdac.in'
+toemails='ecgc-dev7@cdac.in'
 //toemails='ecgcdevops@cdac.in, shwetapal@cdac.in, vrushalic@cdac.in,aakashn@cdac.in,amiteshb@cdac.in,mohasin@cdac.in'
-replyto='ecgc-devops01@cdac.in'
+replyto='ecgc-dev7@cdac.in'
 
