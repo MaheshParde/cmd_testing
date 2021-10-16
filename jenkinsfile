@@ -224,7 +224,7 @@ stage('k8s deploy to sit'){
       }
     }    */   
 
-/*stage('Approval for deployment to SIT') {
+stage('Approval for deployment to QA') {
   steps{
   emailext (
       from: "${fromemail}", 
@@ -240,7 +240,7 @@ stage('k8s deploy to sit'){
 	  def userInput
 	  try{
 	  userInput = input(
-	  id: 'Proceed1', message: 'SIT Deployment Approval',
+	  id: 'Proceed1', message: 'QA Deployment Approval',
 	  parameters: [[$class: 'BooleanParameterDefinition', defaultValue: true,
 	  description: '', name: 'Please provide your confirmation for Deployment']
 	  ])	
@@ -271,7 +271,7 @@ stage('k8s deploy to QA'){
             }
          }
        }
-*/
+
  }
 post {
  success{
