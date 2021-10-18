@@ -228,7 +228,7 @@ stage('Approval for deployment to QA') {
   steps{
   emailext (
       from: "${fromemail}", 
-      to: "${toemails}", 
+      to: "${qaemails}", 
       replyTo: "${replyto}", 
       subject: "Job '${env.JOB_BASE_NAME}' (${env.BUILD_NUMBER}) is waiting for input",  
       body: """<table>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
