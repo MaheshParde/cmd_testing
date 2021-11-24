@@ -163,7 +163,7 @@ stage('Build Images') {
       }
     }
     */
-stage('Upload Images to SIT/QA') {
+/* stage('Upload Images to SIT/QA') {
      steps {
         withCredentials([string(credentialsId: 'DockerRegistryID', variable: 'DockerRegistryID')]) {}
         sh "docker push $beimage"
@@ -189,7 +189,7 @@ stage('k8s deploy to sit'){
        }
 
     }
-    
+    */
 /*stage('Build Images to UAT') {
       steps {
         git url: "${beGitUrl}",
@@ -224,7 +224,7 @@ stage('k8s deploy to sit'){
       }
     }    */   
 
-stage('Approval for deployment to QA') {
+/*stage('Approval for deployment to QA') {
   steps{
   emailext (
       from: "${fromemail}", 
@@ -270,7 +270,7 @@ stage('k8s deploy to QA'){
                     }
             }
          }
-       }
+       }*/
 
  }
 post {
