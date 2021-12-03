@@ -1,5 +1,5 @@
 pipeline {
-  agent slave1
+  agent slave2
   tools {
     maven 'MAVEN_HOME-3.6.3'
   }
