@@ -275,8 +275,8 @@ stage('k8s deploy to QA'){
  }
 post {
  success{
-  emailext attachmentsPattern: 'TestResults\\*.trx', 
-   body: '"${SCRIPT, template="groovy_html.template"}   \n More info at: ${env.BUILD_URL}"',
+  emailext , 
+   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n Changes: \n$changeString   \n More info at: ${env.BUILD_URL}",
    from: "${fromemail}",
    to: "${toemails}",
    subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
