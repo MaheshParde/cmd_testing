@@ -1,13 +1,13 @@
 Job_Name='test-auto'
 
-beGitUrl='git@10.212.0.139:ecgc/smile/bud/erp_bud_bsal_be.git'
+beGitUrl='git@10.212.0.139:ecgc/smile/mktg/erp_mktg_brokerage_be.git'
 beBranch='developer'
 
-feGitUrl='git@10.212.0.139:ecgc/smile/bud/erp_bud_bsal_fe.git'
+feGitUrl='git@10.212.0.139:ecgc/smile/mktg/erp_mktg_brokerage_fe.git'
 feBranch='developer'
          	
-beimage='docker-registry.cdacmumbai.in:443/erp-bud-bsal-be.jar'
-feimage='docker-registry.cdacmumbai.in:443/erp-bud-bsal-fe.jar'
+beimage='docker-registry.cdacmumbai.in:443/erp-mktg-brokerage-be.jar'
+feimage='docker-registry.cdacmumbai.in:443/erp-mktg-brokerage-fe.jar'
 
 
 //uatbeimage='docker-registry.ecgc.in:443/erp-accounts-accounts-be.jar'
