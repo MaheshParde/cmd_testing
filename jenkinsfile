@@ -276,28 +276,28 @@ stage('k8s deploy to QA'){
 post {
  success{
   emailext( 
-   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n "Changes:\n " + getChangeString()  \n More info at: ${env.BUILD_URL}",
+   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n ${currentBuild.changeSets}  \n More info at: ${env.BUILD_URL}",
    from: "${fromemail}",
    to: "${toemails}",
    subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
        )} 
  unstable{
   emailext attachLog: true,
-   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n "Changes:\n " + getChangeString()  \n More info at: ${env.BUILD_URL}\n Please find the log file attached for your reference",
+   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n ${currentBuild.changeSets}  \n More info at: ${env.BUILD_URL}\n Please find the log file attached for your reference",
    from: "${fromemail}",
    to: "${toemails}",
    subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
        } 
  aborted{
   emailext attachLog: true,
-   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n "Changes:\n " + getChangeString()  \n More info at: ${env.BUILD_URL}\n Please find the log file attached for your reference",
+   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n ${currentBuild.changeSets}  \n More info at: ${env.BUILD_URL}\n Please find the log file attached for your reference",
    from: "${fromemail}",
    to: "${toemails}",
    subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
        }
  failure{
   emailext attachLog: true,
-   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n "Changes:\n " + getChangeString()  \n More info at: ${env.BUILD_URL}\n Please find the log file attached for your reference",
+   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n ${currentBuild.changeSets}  \n More info at: ${env.BUILD_URL}\n Please find the log file attached for your reference",
    from: "${fromemail}",
    to: "${toemails}",
    subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
