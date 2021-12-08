@@ -10,8 +10,8 @@ beimage='docker-registry.cdacmumbai.in:443/erp-accounts-accounts-be.jar '
 feimage='docker-registry.cdacmumbai.in:443/erp-accounts-accounts-fe.jar '
 
 
-//uatbeimage='docker-registry.ecgc.in:443/erp-accounts-accounts-be.jar'
-//uatfeimage='docker-registry.ecgc.in:443/erp-accounts-accounts-fe.jar'
+uatbeimage='docker-registry.ecgc.in:443/erp-accounts-accounts-be.jar'
+uatfeimage='docker-registry.ecgc.in:443/erp-accounts-accounts-fe.jar'
 
 fromemail='ecgc-dev7@cdac.in'
 toemails='ecgc-dev7@cdac.in'
