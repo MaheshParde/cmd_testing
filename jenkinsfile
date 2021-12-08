@@ -190,7 +190,7 @@ stage('Upload Images to SIT/QA') {
 
     }
     */
-/*stage('Build Images to UAT') {
+stage('Build Images to UAT') {
       steps {
         git url: "${beGitUrl}",
         branch: "${beBranch}",
@@ -214,15 +214,15 @@ stage('Upload Images to SIT/QA') {
       }
     }
 
-*/
 
-/*stage('Upload Images to UAT') {
+
+stage('Upload Images to UAT') {
      steps {
         withCredentials([string(credentialsId: 'DockerRegistryID', variable: 'DockerRegistryID')]) {}
         sh "docker push $uatbeimage"
         sh "docker push $uatfeimage"
       }
-    }    */   
+    }    
 
 /*stage('Approval for deployment to QA') {
   steps{
