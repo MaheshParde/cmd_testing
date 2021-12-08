@@ -276,9 +276,10 @@ stage('k8s deploy to QA'){
 post {
  success{
   emailext( 
-   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} ${currentBuild.changeSets{items{commitID, author, timestamp  }}} \n More info at: ${env.BUILD_URL}",
+   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}  \n More info at: ${env.BUILD_URL}",
    from: "${fromemail}",
    to: "${toemails}",
+   recipientProviders: [developers()],
    subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
        )} 
  unstable{
