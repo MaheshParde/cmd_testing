@@ -170,25 +170,21 @@ stage('Upload Images to SIT/QA') {
         sh "docker push $feimage"
       }
     }
-stage('k8s deploy to sit'){
+stage('k8s deploying in sit'){
         steps {
-            sshagent(['k8s deploy']) {
-            sh "scp -o StrictHostKeyChecking=no account-account-fe.yml account-account-be.yml root@10.210.0.133:/root"
+            sshagent(['sit-cluster']) {
                 script{
-                         //try{
-                        sh "ssh root@10.210.0.133 kubectl apply -f account-account-fe.yml"
-                        //  }catch(error){
-                        sh "ssh root@10.210.0.133  kubectl rollout restart deployment erp-accounts-accounts-fe -n ecgcfrontend"
-                         //   }
-                        sh "ssh root@10.210.0.133 kubectl apply -f account-account-be.yml"
-                        sh "ssh root@10.210.0.133  kubectl rollout restart deployment erp-accounts-accounts-be -n ecgcbackend"
+
+                        sh "ssh root@10.210.0.140  kubectl rollout restart deployment erp-accounts-accounts-fe -n ecgcfrontend"
+                        sh "ssh root@10.210.0.140  kubectl rollout restart deployment erp-accounts-accounts-be -n ecgcbackend"
     
                     }
-            //}
+           
          }
        }
 
-    }
+}
+
     
 stage('Build Images to UAT') {
       steps {
