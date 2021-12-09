@@ -170,7 +170,7 @@ stage('Upload Images to SIT/QA') {
         sh "docker push $feimage"
       }
     }
-/*stage('k8s deploy to sit'){
+stage('k8s deploy to sit'){
         steps {
             sshagent(['k8s deploy']) {
             sh "scp -o StrictHostKeyChecking=no account-account-fe.yml account-account-be.yml root@10.210.0.133:/root"
@@ -189,7 +189,7 @@ stage('Upload Images to SIT/QA') {
        }
 
     }
-    */
+    
 stage('Build Images to UAT') {
       steps {
         git url: "${beGitUrl}",
