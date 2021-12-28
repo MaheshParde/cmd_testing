@@ -54,7 +54,7 @@ pipeline {
         }
       //  step([$class: 'Publisher', reportFilenamePattern: '**/testng-results.xml'])
         
-        script {
+  /*      script {
           git url: "${feGitUrl}",
           branch: "${feBranch}",
           credentialsId: 'GitLab-KEY'
@@ -63,7 +63,7 @@ pipeline {
           
           
         }
-        step([$class: 'Publisher', reportFilenamePattern: '**/testng-results.xml'])
+   //     step([$class: 'Publisher', reportFilenamePattern: '**/testng-results.xml'])
       }
     }
     */
