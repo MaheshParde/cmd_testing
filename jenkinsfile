@@ -138,7 +138,7 @@ stage('Build Images') {
         sh 'mvn clean package'
         script {
           docker.withRegistry('docker-registry.cdacmumbai.in:443') {
-            def image = docker.build("${beimage}")
+            def image = docker.build("${beimage}") + ":$BUILD_NUMBER"
           }
         }
 
@@ -148,7 +148,7 @@ stage('Build Images') {
         sh 'mvn clean package'
         script {
           docker.withRegistry('docker-registry.cdacmumbai.in:443') {
-            def image = docker.build("${feimage}")
+            def image = docker.build("${feimage}") + ":$BUILD_NUMBER"
           }
         }
       }
