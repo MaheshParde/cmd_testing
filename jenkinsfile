@@ -67,13 +67,14 @@ stage('Build Images') {
     }
     
    
-stage('Upload Images to SIT/QA') {
+/*stage('Upload Images to SIT/QA') {
      steps {
         withCredentials([string(credentialsId: 'DockerRegistryID', variable: 'DockerRegistryID')]) {}
         sh "docker push $beimage"
         sh "docker push $feimage"
       }
     }
+    */
 /*stage('k8s deploying in sit'){
         steps {
             sshagent(['sit-cluster']) {
