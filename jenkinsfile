@@ -87,7 +87,7 @@ pipeline {
         }
     }
 
-    stage('Static Code Analysis') {
+   /* stage('Static Code Analysis') {
       steps {
         script {
           scannerHome = tool 'SonarQubeScanner'
@@ -109,8 +109,8 @@ pipeline {
         }
       }
     }
-    
-  stage('SonarQube Security') {
+  */  
+  /*stage('SonarQube Security') {
       steps {
         script {
           scannerHome = tool 'SonarQubeScanner'
@@ -129,6 +129,7 @@ pipeline {
         }
       }
     }
+    */
 stage('Build Images') {
       steps {
         git url: "${beGitUrl}",
@@ -153,16 +154,7 @@ stage('Build Images') {
       }
     }
     
-    /*
-    stage('Containerization') {
-      steps {
-        git url: "${beGitUrl}", 
-        branch: "${beBranch}", 
-        credentialsId: 'GitLab-KEY'
-        sh "docker-compose start"
-      }
-    }
-    */
+   
 stage('Upload Images to SIT/QA') {
      steps {
         withCredentials([string(credentialsId: 'DockerRegistryID', variable: 'DockerRegistryID')]) {}
@@ -170,7 +162,7 @@ stage('Upload Images to SIT/QA') {
         sh "docker push $feimage"
       }
     }
-stage('k8s deploying in sit'){
+/*stage('k8s deploying in sit'){
         steps {
             sshagent(['sit-cluster']) {
                 script{
@@ -185,8 +177,8 @@ stage('k8s deploying in sit'){
 
 }
 
-    
-stage('Build Images to UAT') {
+*/    
+/* stage('Build Images to UAT') {
       steps {
         git url: "${beGitUrl}",
         branch: "${beBranch}",
@@ -219,7 +211,7 @@ stage('Upload Images to UAT') {
         sh "docker push $uatfeimage"
       }
     }    
-
+*/
 /*stage('Approval for deployment to QA') {
   steps{
   emailext (
