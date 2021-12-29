@@ -1,7 +1,7 @@
 Job_Name='test-auto'
 
 beGitUrl='git@10.212.0.139:ecgc-dev7/testing-auto.git'
-beBranch='developer'
+beBranch='master'
 
 // feGitUrl='git@10.212.0.139:ecgc/smile/accounts/erp_accounts_accounts_fe.git'
 // feBranch='developer'
