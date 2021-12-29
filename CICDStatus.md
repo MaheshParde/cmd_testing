@@ -2,5 +2,5 @@
 # Jenkins Build status
 | Stages        | Status |
 | ------------- |:-----------:| 
-|1.test-auto MS Build Status| [![Build Status](http://10.210.12.76:8080/buildStatus/icon?job=test-auto)](http://10.210.12.76:8080/job/test-auto/)||
+|1.Erp-Accounts-Accounts MS Build Status| [![Build Status](http://10.212.0.92:8080/buildStatus/icon?job=erp-accounts-accounts)](http://10.212.0.92:8080/job/erp-accounts-accounts/)||
 
