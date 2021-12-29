@@ -34,10 +34,7 @@ pipeline {
         credentialsId: 'GitLab-KEY'
         sh "mvn  compile"
         
-        git url: "${feGitUrl}",
-        branch: "${feBranch}",
-        credentialsId: 'GitLab-KEY'
-        sh "mvn compile"
+       
       }
     }
     
@@ -55,14 +52,7 @@ stage('Build Images') {
           }
         }
 
-        git url: "${feGitUrl}",
-        branch: "${feBranch}",
-        credentialsId: 'GitLab-KEY'
-        sh 'mvn clean package'
-        script {
-          docker.withRegistry('docker-registry.cdacmumbai.in:443') {
-            def image = docker.build("${feimage}") 
-          }
+       
         }
       }
     }
