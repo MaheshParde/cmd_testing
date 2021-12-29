@@ -10,7 +10,7 @@ beBranch='master'
 
 
          	
-beimage='docker-registry.cdacmumbai.in:443/erp-accounts-accounts-be.jar:version'
+beimage='docker-registry.cdacmumbai.in:443/erp-accounts-accounts-be.jar'
 
 // feimage='docker-registry.cdacmumbai.in:443/erp-accounts-accounts-fe.jar:$BUILD_NUMBER '
 
