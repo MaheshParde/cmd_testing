@@ -6,7 +6,7 @@ beBranch='developer'
 // feGitUrl='git@10.212.0.139:ecgc/smile/accounts/erp_accounts_accounts_fe.git'
 // feBranch='developer'
          	
-beimage='docker-registry.cdacmumbai.in:443/erp-accounts-accounts-be.jar:$BUILD_NUMBER '
+beimage='docker-registry.cdacmumbai.in:443/erp-accounts-accounts-be.jar'
 // feimage='docker-registry.cdacmumbai.in:443/erp-accounts-accounts-fe.jar:$BUILD_NUMBER '
 
 
