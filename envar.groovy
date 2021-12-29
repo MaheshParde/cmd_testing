@@ -1,6 +1,6 @@
 Job_Name='test-auto'
 
-version = "cat VERSION"
+version = "`cat VERSION`"
 
 beGitUrl='git@10.212.0.139:ecgc-dev7/testing-auto.git'
 beBranch='master'
