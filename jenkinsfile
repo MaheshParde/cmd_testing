@@ -46,7 +46,7 @@ stage('Build Images') {
         credentialsId: 'GitLab-KEY'
         sh 'mvn clean package'
         script {
-            //sh "version = `cat VERSION`"
+            sh "echo ${version}"
             docker.withRegistry('docker-registry.cdacmumbai.in:443') {
             def image = docker.build("${beimage}")
           }
