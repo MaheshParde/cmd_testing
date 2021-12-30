@@ -49,7 +49,7 @@ stage('Build Images') {
             sh "echo ${version}"
             docker.withRegistry('docker-registry.cdacmumbai.in:443') {
             def image = docker.build("${beimage}")
-            def image = docker.build("${beimage}:${version}")
+            image = docker.build("${beimage}:${version}")
           }
         }
 
