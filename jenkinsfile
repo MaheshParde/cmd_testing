@@ -170,6 +170,7 @@ post {
  success{
   emailext( 
    body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}  \n More info at: ${env.BUILD_URL}",
+   recipientProviders: [buildUser(), upstreamDevelopers(), brokenTestsSuspects(), brokenBuildSuspects()], 
    from: "${fromemail}",
    to: "${toemails}",
    subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
