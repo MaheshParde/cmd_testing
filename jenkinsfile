@@ -62,7 +62,7 @@ pipeline {
       }
     }
     
- stage('SonarQube Security') {
+ /*stage('SonarQube Security') {
       steps {
         script {
           scannerHome = tool 'SonarQubeScanner'
@@ -83,7 +83,7 @@ pipeline {
 
         
       }
-    }
+    }*/
 /*    stage('Upload Images to SIT/QA') {
       steps {
         withCredentials([string(credentialsId: 'DockerRegistryID', variable: 'DockerRegistryID')]) {}
@@ -92,7 +92,7 @@ pipeline {
       }
     }
  */   
-    stage('Build Images to UAT') {
+ /*   stage('Build Images to UAT') {
       steps {
         git url: "${beGitUrl}",
         branch: "${beBranch}",
@@ -105,7 +105,7 @@ pipeline {
             }
         }
     
-    }
+    }*/
 
 /*     stage('Upload Images to UAT') {
      steps {
@@ -148,7 +148,7 @@ stage('k8s deploying in qa'){
   post {
   success{
   emailext( 
-   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} Deployed in SIT & QA \n More info at: ${env.BUILD_URL} BUILD_TRIGGER_BY: ${BUILD_USER}",
+   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} Deployed in SIT & QA \n More info at: ${env.BUILD_URL} BUILD_TRIGGER_BY: ${env.BUILD_USER_ID}",
    from: "${fromemail}",
    to: "${toemails}",
    subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME} Deployed in QA"
