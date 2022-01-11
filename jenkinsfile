@@ -62,7 +62,7 @@ pipeline {
       }
     }
     
- /*stage('SonarQube Security') {
+ stage('SonarQube Security') {
       steps {
         script {
           scannerHome = tool 'SonarQubeScanner'
@@ -83,7 +83,7 @@ pipeline {
 
         
       }
-    }*/
+    }
 /*    stage('Upload Images to SIT/QA') {
       steps {
         withCredentials([string(credentialsId: 'DockerRegistryID', variable: 'DockerRegistryID')]) {}
