@@ -148,7 +148,7 @@ stage('k8s deploying in qa'){
   post {
   success{
   emailext( 
-   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} Deployed in SIT & QA \n More info at: ${env.BUILD_URL} BUILD_STARTED_BY: ${currentBuild.getBuildCauses()[0].shortDescription} / ${currentBuild.getBuildCauses()[0].userId}",
+   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} Deployed in SIT & QA \n More info at: ${env.BUILD_URL} BUILD_TRIGGER_BY: ${BUILD_USER}",
    from: "${fromemail}",
    to: "${toemails}",
    subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME} Deployed in QA"
