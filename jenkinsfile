@@ -1,4 +1,7 @@
 pipeline {
+   when{
+    branch "master"
+   }
   agent any
   tools {
     maven 'MAVEN_HOME-3.6.3'
