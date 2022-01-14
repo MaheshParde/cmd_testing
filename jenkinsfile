@@ -174,7 +174,7 @@ stage('k8s deploying in qa'){
        }
  failure{
   emailext attachLog: true,
-   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}\n Please find the log file attached for your reference",
+   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} failed at stage ${env.STAGE_NAME} \n More info at: ${env.BUILD_URL}\n Please find the log file attached for your reference",
    from: "${fromemail}",
    to: "${toemails}",
    subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
