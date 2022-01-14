@@ -156,7 +156,7 @@ stage('k8s deploying in qa'){
    body:"${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} Deployed in SIT & QA \n More info at: ${env.BUILD_URL} ${currentBuild.getBuildCauses()[0].shortDescription}",
    from: "${fromemail}",
    to: "${toemails}",
-   subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME} ${env.GIT_BRANCH}-${currentBuild.id} ${currentBuild.timeInMillis} Deployed in QA"
+   subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME} ${env.GIT_BRANCH}-${currentBuild.id} Deployed in SIT and QA"
        )} 
  unstable{
   emailext attachLog: true,
