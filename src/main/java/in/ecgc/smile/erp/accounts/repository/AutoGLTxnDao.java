@@ -10,5 +10,5 @@ public interface AutoGLTxnDao {
 	List<AutoGLTxnRequestModel> getAllAutoTxnRequest();
 	AutoGLTxnRequestModel getAllAutoTxnRequestById(String requestId);
 	Integer updateAutoTxnRequest(AutoGLTxnRequestModel autoGLTxnRequestModel);
-	Integer updateRequestStatus(String reqId, String status);
+	Integer updateRequestStatus(String reqId, String status;
 }
