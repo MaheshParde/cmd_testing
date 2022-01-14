@@ -67,7 +67,7 @@ pipeline {
       }
     }
     
- stage('SonarQube Security') {
+ /*stage('SonarQube Security') {
       steps {
         script {
           scannerHome = tool 'SonarQubeScanner'
@@ -76,7 +76,7 @@ pipeline {
           sh  "mvn clean verify sonar:sonar"
         }
       }
-    }
+    }*/
     stage('Build Images') {
       steps {
         sh 'mvn clean package'
