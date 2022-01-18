@@ -3,7 +3,7 @@ pipeline {
   agent any
   parameters {
     gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
-    choice(name: "DEPLOY_TO", choices: ["", "sit", "qa"])
+    choice(name: "DEPLOY_TO", choices: ["sit", "qa"])
   }
   
   tools {
