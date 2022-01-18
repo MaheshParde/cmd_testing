@@ -121,7 +121,7 @@ pipeline {
       }
     }*/
 stage('k8s deploying in sit'){
-        when { params.DEPLOY_TO == "sit" }
+        if (params.DEPLOY_TO == "sit"){
         steps {
             sshagent(['k8s deploy']) {
                 script{
@@ -131,13 +131,14 @@ stage('k8s deploying in sit'){
     
                     }
            
-         }
-       }
+          }
+        }
+      }
 
 }
 
 stage('k8s deploying in qa'){
-        when { params.DEPLOY_TO == "qa" }
+        if(params.DEPLOY_TO == "qa" ){
         steps {
             sshagent(['k8s deploy']) {            
                 script{                      
@@ -145,12 +146,13 @@ stage('k8s deploying in qa'){
                         echo "qa"
                         
     
-                    }
+                     }
             
-         }
+               }
+            }
        }
 
-}
+   }
 
 
   }
