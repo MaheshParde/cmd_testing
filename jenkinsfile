@@ -121,7 +121,7 @@ pipeline {
       }
     }*/
 stage('k8s deploying in sit'){
-        when { expression { params.DEPLOY_TO == "sit"} }
+        when { params.DEPLOY_TO == "sit" }
         steps {
             sshagent(['k8s deploy']) {
                 script{
@@ -137,11 +137,11 @@ stage('k8s deploying in sit'){
 }
 
 stage('k8s deploying in qa'){
-        when { expression { params.DEPLOY_TO == "qa"} }
+        when { params.DEPLOY_TO == "qa" }
         steps {
             sshagent(['k8s deploy']) {            
                 script{                      
-                        sh "ssh root@10.210.0.160  kubectl rollout restart deployment erp-payroll-salary-processing-be -n ecgcbackend"
+                       // sh "ssh root@10.210.0.160  kubectl rollout restart deployment erp-payroll-salary-processing-be -n ecgcbackend"
                         echo "qa"
                         
     
