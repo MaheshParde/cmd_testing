@@ -3,7 +3,7 @@ pipeline {
   agent any
   parameters {
     gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
-    choice(name: "DEPLOY_TO", choices: [" ", "sit", "qa"], description: 'Users Choice')
+    choice(name: "DEPLOY_TO", choices: ["sit", "qa"], description: 'Users Choice')
   }
   
   tools {
@@ -121,7 +121,8 @@ pipeline {
       }
     }*/
 stage('k8s deploying in sit'){
-        when { expression { params.DEPLOY_TO == "sit" } }
+        when { expression { params.DEPLOY_TO == "sit"
+                            params.DEPLOY_TO == "qa" } }
         steps {
             sshagent(['k8s deploy']) {
                 script{
@@ -137,7 +138,8 @@ stage('k8s deploying in sit'){
 }
 
 stage('k8s deploying in qa'){
-        when { expression { params.DEPLOY_TO == "qa" } }
+        when { expression { params.DEPLOY_TO == "qa" ||
+                            params.DEPLOY_TO == "sit"} }
         steps {
             sshagent(['k8s deploy']) {            
                 script{                      
