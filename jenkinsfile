@@ -155,7 +155,8 @@ stage('k8s deploying in qa'){
            // env.ForEmailPlugin = env.WORKSPACE      
             emailext attachmentsPattern: 'testng-results.xml',      
             body: '''${SCRIPT, template="groovy_html.template"}''', 
-            subject: currentBuild.currentResult + " : " + env.JOB_NAME
+            subject: currentBuild.currentResult + " : " + env.JOB_NAME,
+            to: "${toemails}",
   } 
  unstable{
   emailext attachLog: true,
