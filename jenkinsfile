@@ -121,38 +121,40 @@ pipeline {
       }
     }*/
 stage('k8s deploying in sit'){
-        def deploy = "${params.DEPLOY_TO}"
-        if (deploy == "sit"){
+        
         steps {
             sshagent(['k8s deploy']) {
                 script{
+                def deploy = "${params.DEPLOY_TO}"
+                if (deploy == "sit"){
 
                         //sh "ssh root@10.210.0.140  kubectl rollout restart deployment erp-payroll-salary-processing-be -n ecgcbackend"
                         echo "sit"
+                        }
     
                     }
            
           }
         }
-      }
+      
 
 }
 
 stage('k8s deploying in qa'){
-        def deploy = "${params.DEPLOY_TO}"
-        if(deploy == "qa" ){
         steps {
             sshagent(['k8s deploy']) {            
-                script{                      
+                script{  
+                        def deploy = "${params.DEPLOY_TO}"
+                        if(deploy == "qa" ){
                        // sh "ssh root@10.210.0.160  kubectl rollout restart deployment erp-payroll-salary-processing-be -n ecgcbackend"
                         echo "qa"
-                        
+                        }
     
                      }
             
                }
             }
-       }
+       
 
    }
 
