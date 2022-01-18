@@ -152,11 +152,12 @@ stage('k8s deploying in qa'){
   }
   post {
   success{
-           // env.ForEmailPlugin = env.WORKSPACE      
-            emailext attachmentsPattern: 'target/surefire-reports/testng-results.xml',      
-            body: '''${SCRIPT, template="groovy_html.template"}''', 
-            subject: currentBuild.currentResult + " : " + env.JOB_NAME,
-            to: "${toemails}"
+   emailext attachLog: true,
+   body:"${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} Deployed in SIT & QA \n More info at: ${env.BUILD_URL} ${currentBuild.getBuildCauses()[0].shortDescription}",
+   from: "${fromemail}",
+   to: "${toemails}",
+   subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME} ${currentBuild.fullDisplayName} ${env.GIT_BRANCH}-${currentBuild.id} Deployed in SIT and QA"
+       
   } 
  unstable{
   emailext attachLog: true,
