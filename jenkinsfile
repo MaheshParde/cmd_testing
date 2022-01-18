@@ -153,7 +153,7 @@ stage('k8s deploying in qa'){
   post {
   success{
            // env.ForEmailPlugin = env.WORKSPACE      
-            emailext attachmentsPattern: 'testng-results.xml',      
+            emailext attachmentsPattern: 'target/surefire-reports/testng-results.xml',      
             body: '''${SCRIPT, template="groovy_html.template"}''', 
             subject: currentBuild.currentResult + " : " + env.JOB_NAME,
             to: "${toemails}"
