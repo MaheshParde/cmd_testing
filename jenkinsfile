@@ -3,7 +3,7 @@ pipeline {
   agent any
   parameters {
     gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
-    choice(name: "DEPLOY_TO", choices: ["sit", "qa"])
+    choice(name: "DEPLOY_TO", choices: [sit', 'qa], description: 'Users Choice')
   }
   
   tools {
@@ -121,9 +121,9 @@ pipeline {
       }
     }*/
 stage('k8s deploying in sit'){
-        when { expression { params.DEPLOY_TO == "sit" } }
+        when { expression { env.DEPLOY_TO == "sit" } }
         steps {
-            sshagent(['sit-cluster']) {
+            sshagent(['k8s deploy']) {
                 script{
 
                         //sh "ssh root@10.210.0.140  kubectl rollout restart deployment erp-payroll-salary-processing-be -n ecgcbackend"
@@ -137,9 +137,9 @@ stage('k8s deploying in sit'){
 }
 
 stage('k8s deploying in qa'){
-        when { expression { params.DEPLOY_TO == "qa" } }
+        when { expression { env.DEPLOY_TO == "qa" } }
         steps {
-            sshagent(['qa-cluster']) {            
+            sshagent(['k8s deploy']) {            
                 script{                      
                         sh "ssh root@10.210.0.160  kubectl rollout restart deployment erp-payroll-salary-processing-be -n ecgcbackend"
                         echo "qa"
