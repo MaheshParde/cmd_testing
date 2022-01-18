@@ -121,7 +121,8 @@ pipeline {
       }
     }*/
 stage('k8s deploying in sit'){
-        if (params.DEPLOY_TO == "sit"){
+        def deploy = "${params.DEPLOY_TO}"
+        if (deploy == "sit"){
         steps {
             sshagent(['k8s deploy']) {
                 script{
@@ -138,7 +139,8 @@ stage('k8s deploying in sit'){
 }
 
 stage('k8s deploying in qa'){
-        if(params.DEPLOY_TO == "qa" ){
+        def deploy = "${params.DEPLOY_TO}"
+        if(deploy == "qa" ){
         steps {
             sshagent(['k8s deploy']) {            
                 script{                      
