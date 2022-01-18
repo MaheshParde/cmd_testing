@@ -156,7 +156,7 @@ stage('k8s deploying in qa'){
             emailext attachmentsPattern: 'testng-results.xml',      
             body: '''${SCRIPT, template="groovy_html.template"}''', 
             subject: currentBuild.currentResult + " : " + env.JOB_NAME,
-            to: "${toemails}",
+            to: "${toemails}"
   } 
  unstable{
   emailext attachLog: true,
