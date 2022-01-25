@@ -3,7 +3,7 @@ pipeline {
   agent any
   parameters {
     gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
-    choice(name: "DEPLOY_TO", choices: [ "sit", "qa"], description: 'Users Choice')
+    //choice(name: "DEPLOY_TO", choices: [ "sit", "qa"], description: 'Users Choice')
   }
   
   tools {
@@ -120,7 +120,7 @@ pipeline {
         //sh "docker push $uatfeimage"
       }
     }*/
-stage('k8s deploying in sit'){
+/*stage('k8s deploying in sit'){
         
         steps {
             sshagent(['k8s deploy']) {
@@ -156,7 +156,7 @@ stage('k8s deploying in qa'){
             }
        
 
-   }
+   }*/
 
 
   }
