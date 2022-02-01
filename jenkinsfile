@@ -161,7 +161,24 @@ stage('k8s deploying in qa'){
                      }
             
                }
-            }   
+            }  
+
+stage('k8s deploying in SIT and QA'){
+         when { 
+                expression { env.CHOICE == 'SIT-QA' }
+            } 
+        steps {
+            sshagent(['k8s deploy']) {            
+                script{  
+                        //sh "ssh root@10.210.0.140  kubectl rollout restart deployment erp-payroll-salary-processing-be -n ecgcbackend"
+                       // sh "ssh root@10.210.0.160  kubectl rollout restart deployment erp-payroll-salary-processing-be -n ecgcbackend"
+                        echo "SIT-QA"
+                      }
+    
+                     }
+            
+               }
+            } 
 
 
   }
