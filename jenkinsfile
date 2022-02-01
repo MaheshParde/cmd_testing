@@ -158,10 +158,10 @@ stage('k8s deploying in qa'){
                         echo "qa"
                       }
     
-                     }
+                                     }
             
                }
-            }  
+                           }  
 
 stage('k8s deploying in SIT and QA'){
          when { 
