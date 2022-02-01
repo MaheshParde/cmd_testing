@@ -126,6 +126,7 @@ pipeline {
     }*/
 stage('environment selection') {
             steps{
+                timeout(time: 1, unit: 'MINUTES')
                 script{
                 env.RELEASE_SCOPE = input message: 'Select the environment',
                 parameters: [choice(choices: ['SIT','QA','SIT-QA'], 
