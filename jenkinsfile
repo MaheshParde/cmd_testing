@@ -5,6 +5,10 @@ pipeline {
     //gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
     //choice(name: "DEPLOY_TO", choices: [ "sit", "qa","sit-qa"], description: 'Users Choice')
   }*/
+
+   parameters {
+        choice(choices:['SIT','QA','SIT-QA'], description: 'Users Choice', name: 'CHOICE')
+    }
   
   tools {
     maven 'MAVEN_HOME-3.6.3'
@@ -120,13 +124,23 @@ pipeline {
         //sh "docker push $uatfeimage"
       }
     }*/
-/*stage('k8s deploying in sit'){
+ stage('Manual Step') {
+            steps('Input') {
+                echo "choice: ${CHOICE}"
+                echo "choice params.: " + params.CHOICE
+                echo "choice env: " + env.CHOICE
+            }
+        }
+stage('k8s deploying in sit'){
         
+        when { 
+                expression { env.CHOICE == 'SIT' }
+            } 
         steps {
             sshagent(['k8s deploy']) {
                 script{
-                def deploy = "${params.DEPLOY_TO}"
-                if (deploy == "sit"){
+                //def deploy = "${params.DEPLOY_TO}"
+                //if (deploy == "sit"){
 
                         //sh "ssh root@10.210.0.140  kubectl rollout restart deployment erp-payroll-salary-processing-be -n ecgcbackend"
                         echo "sit"
@@ -141,11 +155,14 @@ pipeline {
 }
 
 stage('k8s deploying in qa'){
+         when { 
+                expression { env.CHOICE == 'QA' }
+            } 
         steps {
             sshagent(['k8s deploy']) {            
                 script{  
-                        def deploy = "${params.DEPLOY_TO}"
-                        if(deploy == "qa" ){
+                        //def deploy = "${params.DEPLOY_TO}"
+                        //if(deploy == "qa" ){
                        // sh "ssh root@10.210.0.160  kubectl rollout restart deployment erp-payroll-salary-processing-be -n ecgcbackend"
                         echo "qa"
                         }
@@ -154,9 +171,28 @@ stage('k8s deploying in qa'){
             
                }
             }
+
+
+stage('k8s deploying in SIt and QA'){
+         when { 
+                expression { env.CHOICE == 'SIT-QA' }
+            } 
+        steps {
+            sshagent(['k8s deploy']) {            
+                script{  
+                        //def deploy = "${params.DEPLOY_TO}"
+                        //if(deploy == "qa" ){
+                       // sh "ssh root@10.210.0.160  kubectl rollout restart deployment erp-payroll-salary-processing-be -n ecgcbackend"
+                        echo "SIT & QA"
+                        }
+    
+                     }
+            
+               }
+            }
        
 
-   }*/
+   }
 
 
   }
