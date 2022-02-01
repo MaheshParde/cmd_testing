@@ -19,7 +19,7 @@ pipeline {
     stage('Environment Variables') {
       steps {
         script {
-          load "$JENKINS_HOME/workspace/$Job_Name/envar.groovy"        
+          load "$JENKINS_HOME/workspace/$Job_Name@script/envar.groovy"        
         }
       }
     }
