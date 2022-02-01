@@ -1,0 +1,35 @@
+pipeline {
+  agent any
+  tools {
+    maven 'MAVEN_HOME-3.6.3'
+  }
+  
+    //each branch has 1 job running at a time
+  options {
+    disableConcurrentBuilds()  
+  }
+
+  stages {
+      stage('test'){
+          steps{
+                 echo"test"
+          }
+         
+       } 
+   
+
+}
+
+  post {
+  success{
+  emailext( 
+   body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} Deployed in QA \n More info at: ${env.BUILD_URL}",
+   from: "ecgcdevops@cdac.in",
+   to: "ecgc-dev7@cdac.in",
+   subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME} Deployed in QA"
+       )}              
+    always {
+      cleanWs()
+    }
+  }
+}
