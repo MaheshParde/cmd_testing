@@ -6,9 +6,9 @@ pipeline {
     //choice(name: "DEPLOY_TO", choices: [ "sit", "qa","sit-qa"], description: 'Users Choice')
   }*/
 
-   parameters {
+   /*parameters {
         choice(choices:['SIT','QA','SIT-QA'], description: 'Users Choice', name: 'CHOICE')
-    }
+    }*/
   
   tools {
     maven 'MAVEN_HOME-3.6.3'
@@ -124,17 +124,19 @@ pipeline {
         //sh "docker push $uatfeimage"
       }
     }*/
- stage('Manual Step') {
-            steps('Input') {
-                echo "choice: ${CHOICE}"
-                echo "choice params.: " + params.CHOICE
-                echo "choice env: " + env.CHOICE
+stage('environment selection') {
+            steps{
+                script{
+                env.RELEASE_SCOPE = input message: 'Select the environment',
+                parameters: [choice(choices: ['SIT','QA','SIT-QA'], 
+                description: 'Users Choice', name: 'CHOICE')]
+                }
             }
         }
 stage('k8s deploying in sit'){
         
         when { 
-                expression { env.CHOICE == 'SIT' }
+                expression { env.RELEASE_SCOPE == 'SIT' }
             } 
         steps {
             sshagent(['k8s deploy']) {
@@ -149,7 +151,7 @@ stage('k8s deploying in sit'){
         }   
 stage('k8s deploying in qa'){
          when { 
-                expression { env.CHOICE == 'QA' }
+                expression { env.RELEASE_SCOPE == 'QA' }
             } 
         steps {
             sshagent(['k8s deploy']) {            
@@ -165,7 +167,7 @@ stage('k8s deploying in qa'){
 
 stage('k8s deploying in SIT and QA'){
          when { 
-                expression { env.CHOICE == 'SIT-QA' }
+                expression { env.RELEASE_SCOPE == 'SIT-QA' }
             } 
         steps {
             sshagent(['k8s deploy']) {            
