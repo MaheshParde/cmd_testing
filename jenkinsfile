@@ -161,9 +161,7 @@ stage('k8s deploying in qa'){
                      }
             
                }
-            }      
-
-   }
+            }   
 
 
   }
@@ -197,8 +195,8 @@ stage('k8s deploying in qa'){
    to: "${toemails}",
    subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
        }               
-    //always {
-    //  cleanWs()
-    //}
+    always {
+    cleanWs()
+    }
   }
 }
