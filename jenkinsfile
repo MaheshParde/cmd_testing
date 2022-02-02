@@ -127,10 +127,11 @@ pipeline {
 stage('environment selection') {
             steps{                
                 script{
-                timeout(time: 1, unit: 'MINUTES')
+                timeout(time: 1, unit: 'MINUTES'){
                 env.RELEASE_SCOPE = input message: 'Select the environment',
                 parameters: [choice(choices: ['SIT','QA','SIT-QA'], 
                 description: 'Users Choice', name: 'CHOICE')]
+                   }
                 }
             }
         }
