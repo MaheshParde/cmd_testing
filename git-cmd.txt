@@ -1,0 +1,10 @@
+git config --global user.name myusername   ----> to configure usarname on local 
+git config --global user.email myemail  ----> To configure email
+
+git config --global user.name  -----> To check what is username login on local 
+git config --global user.email   ----> To check what is email on local
+
+git remote -v  ----> To see existing URL on local
+
+git remote remove origin   ----> to remove URL from local (https://stackoverflow.com/questions/32665142/how-to-delete-url-in-git)
+
